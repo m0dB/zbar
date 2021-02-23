@@ -2,7 +2,7 @@
 
 Copyright (c) 2021 m0dB https://github.com/m0dB
 
-This code implements a decoder for URs using the format as implementated in https://github.com/BlueWallet/BlueWallet/tree/master/blue_modules/bc-ur
+This code implements a decoder for URs using the format as implementated in https://github.com/BlueWallet/BlueWallet/tree/master/blue_modules/bc-ur and https://github.com/CoboVault/cobo-vault-blockchain-base/tree/master/packages/bc-ur 
 
 == Supported format ==
 
