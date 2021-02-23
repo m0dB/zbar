@@ -68,6 +68,7 @@ struct qr_reader {
     isaac_ctx isaac;
     /* current finder state, horizontal and vertical lines */
     qr_finder_lines finder_lines[2];
+    urbytesdecoder_t* urbytesdecoder;
 };
 
 
@@ -79,6 +80,7 @@ static void qr_reader_init (qr_reader *reader)
       isaac_init(&_reader->isaac,&now,sizeof(now));*/
     isaac_init(&reader->isaac, NULL, 0);
     rs_gf256_init(&reader->gf, QR_PPOLY);
+    reader->urbytesdecoder = urbytesdecoder_create();
 }
 
 /*Allocates a client reader handle.*/
@@ -99,6 +101,8 @@ void _zbar_qr_destroy (qr_reader *reader)
         free(reader->finder_lines[0].lines);
     if(reader->finder_lines[1].lines)
         free(reader->finder_lines[1].lines);
+    if (reader->urbytesdecoder)
+        urbytesdecoder_destroy(reader->urbytesdecoder);
     free(reader);
 }
 
@@ -4031,7 +4035,7 @@ int _zbar_qr_decode (qr_reader *reader,
                                 bin, img->width, img->height);
 
         if(qrlist.nqrdata > 0)
-            nqrdata = qr_code_data_list_extract_text(&qrlist, iscn, img);
+            nqrdata = qr_code_data_list_extract_text(&qrlist, iscn, img, reader->urbytesdecoder);
 
         qr_code_data_list_clear(&qrlist);
         free(bin);

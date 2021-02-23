@@ -64,7 +64,8 @@ static void enc_list_mtf(iconv_t _enc_list[ENC_LIST_SIZE],iconv_t _enc){
 
 int qr_code_data_list_extract_text(const qr_code_data_list *_qrlist,
                                    zbar_image_scanner_t *iscn,
-                                   zbar_image_t *img)
+                                   zbar_image_t *img,
+                                   urbytesdecoder_t* urbytesdecoder)
 {
   iconv_t              sjis_cd;
   iconv_t              utf8_cd;
@@ -490,8 +491,28 @@ int qr_code_data_list_extract_text(const qr_code_data_list *_qrlist,
       sa_sym->data_alloc = sa_ntext;
       sa_sym->datalen = sa_ntext - 1;
       sa_sym->modifiers = fnc1;
-
-      _zbar_image_scanner_add_sym(iscn, sa_sym);
+      /* check if we are dealing with an (animated) qr of a UR */
+      if (urbytesdecoder)
+      {
+        char* parsed = urbytesdecoder_parse(urbytesdecoder, sa_sym->data, sa_sym->datalen);
+        if (parsed)
+        {
+          /* got the full message decoded. reuse last sym, replacing the text */
+          free(sa_text);
+          sa_sym->data = parsed;
+          sa_sym->data_alloc = strlen(parsed) + 1;
+          sa_sym->datalen = strlen(parsed);
+          _zbar_image_scanner_add_sym(iscn, sa_sym);
+        }
+        else
+        {
+          /* not complete yet */
+          _zbar_symbol_free(sa_sym);
+        }
+      }
+      else {
+        _zbar_image_scanner_add_sym(iscn, sa_sym);
+      }
     }
     else {
         _zbar_image_scanner_recycle_syms(iscn, syms);

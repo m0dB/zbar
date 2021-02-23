@@ -1,0 +1,40 @@
+= Decoder for Uniform Resources (UR) =
+
+Copyright (c) 2021 m0dB https://github.com/m0dB
+
+This code implements a decoder for URs using the format as implementated in https://github.com/BlueWallet/BlueWallet/tree/master/blue_modules/bc-ur
+
+== Supported format ==
+
+The format of the messages is:
+  
+  <header>/<encoded-payload>
+
+or
+
+  <header>/<encoded-digest>/<encoded-payload>
+
+or
+
+  <header>/<sequence>/<encoded-digest>/<encoded-partial-payload>
+
+where:
+
+  header = "UR:BYTES"
+  sequence = <index>"OF"<total> (where index is 1-based)
+  encoded-digest = bech32(sha32(<cbor_payload>))
+  encoded-payload = bech32(<cbor_payload>)
+  encoded-partial-payload = bech32(segment(<cbor_payload>))
+  cbor_payload = cbor_bytestring(<full payload>)
+
+Note that this deverges from the BCR-2020-005 paper https://github.com/BlockchainCommons/Research/blob/master/papers/bcr-2020-005-ur.mdniform Resources (UR) on several points.
+
+== Usage ==
+
+The decoder will consume segment messages, as added with parse(..) and output the decoded payload in base64 when successful. Partial payloads with the same digest (not necessarily in order) are gathered until the full payload can be reconstructed and checked against the digest. The decoder will output the full payload in base64.
+
+== Practical use ==
+
+QR Codes generates with BlueWallet (e.g. to transfer PSBT transaction to an air gapped device) can be decoded with test and have been tested to work when integrated in zbar and called from Electrum.
+
+

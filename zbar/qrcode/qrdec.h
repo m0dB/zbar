@@ -7,6 +7,7 @@
 # define _qrdec_H (1)
 
 #include <zbar.h>
+#include "bc-ur/urbytesdecoder.h"
 
 typedef struct qr_code_data_entry qr_code_data_entry;
 typedef struct qr_code_data       qr_code_data;
@@ -165,7 +166,8 @@ struct qr_code_data_list{
    codes; this will be at most the number of codes.*/
 int qr_code_data_list_extract_text(const qr_code_data_list *_qrlist,
                                    zbar_image_scanner_t *iscn,
-                                   zbar_image_t *img);
+                                   zbar_image_t *img,
+                                   urbytesdecoder_t* urbytesdecoder);
 
 
 /*TODO: Parse DoCoMo standard barcode data formats.

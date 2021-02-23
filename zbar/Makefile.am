@@ -49,7 +49,9 @@ libzbar_la_SOURCES += qrcode.h \
     qrcode/isaac.h qrcode/isaac.c \
     qrcode/bch15_5.h qrcode/bch15_5.c \
     qrcode/binarize.h qrcode/binarize.c \
-    qrcode/util.h qrcode/util.c
+    qrcode/util.h qrcode/util.c \
+    qrcode/bc-ur/sha256.h qrcode/bc-ur/sha256.c \
+    qrcode/bc-ur/urbytesdecoder.h qrcode/bc-ur/urbytesdecoder.cpp
 endif
 if ENABLE_SQCODE
 libzbar_la_SOURCES += sqcode.h sqcode.c \
