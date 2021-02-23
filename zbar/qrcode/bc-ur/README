@@ -2,7 +2,9 @@
 
 Copyright (c) 2021 m0dB https://github.com/m0dB
 
-This code implements a decoder for URs using the format as implementated in https://github.com/BlueWallet/BlueWallet/tree/master/blue_modules/bc-ur and https://github.com/CoboVault/cobo-vault-blockchain-base/tree/master/packages/bc-ur 
+This code implements a decoder for URs using the format as implementated in
+https://github.com/BlueWallet/BlueWallet/tree/master/blue_modules/bc-ur and
+https://github.com/CoboVault/cobo-vault-blockchain-base/tree/master/packages/bc-ur 
 
 == Supported format ==
 
@@ -27,14 +29,20 @@ where:
   encoded-partial-payload = bech32(segment(<cbor_payload>))
   cbor_payload = cbor_bytestring(<full payload>)
 
-Note that this deverges from the BCR-2020-005 paper https://github.com/BlockchainCommons/Research/blob/master/papers/bcr-2020-005-ur.mdniform Resources (UR) on several points.
+Note that this deverges from the BCR-2020-005 paper on several points.
+https://github.com/BlockchainCommons/Research/blob/master/papers/bcr-2020-005-ur.md
 
 == Usage ==
 
-The decoder will consume segment messages, as added with parse(..) and output the decoded payload in base64 when successful. Partial payloads with the same digest (not necessarily in order) are gathered until the full payload can be reconstructed and checked against the digest. The decoder will output the full payload in base64.
+The decoder will consume segment messages, as added with parse(..) and output the
+decoded payload in base64 when successful. Partial payloads with the same digest
+(not necessarily in order) are gathered until the full payload can be reconstructed
+and checked against the digest. The decoder will output the full payload in base64.
 
 == Practical use ==
 
-QR Codes generates with BlueWallet (e.g. to transfer PSBT transaction to an air gapped device) can be decoded with test and have been tested to work when integrated in zbar and called from Electrum.
+QR Codes generates with BlueWallet (e.g. to transfer PSBT transaction to an air
+gapped device) can be decoded with test and have been tested to work when
+integrated in zbar and called from Electrum.
 
 
